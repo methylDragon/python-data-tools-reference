@@ -256,6 +256,49 @@ np.random.normal(0, 1 (3, 3)) # Mean, std_dev, size
 #             [ 0.33005433, -0.74426642,  0.97679512]])
 ```
 
+#### **Mesh Grids**
+
+Mesh grids are useful when you need a rectangular grid of x and y values.
+
+You can use them to plot higher dimensional functions!
+
+![enter image description here](assets/kZNzz.png)
+
+```python
+xx, yy = np.mgrid[0:5,0:5]
+
+# xx: array([[[0, 0, 0, 0, 0],
+#             [1, 1, 1, 1, 1],
+#             [2, 2, 2, 2, 2],
+#             [3, 3, 3, 3, 3],
+#             [4, 4, 4, 4, 4]])
+
+# yy: array([[0, 1, 2, 3, 4],
+#            [0, 1, 2, 3, 4],
+#            [0, 1, 2, 3, 4],
+#            [0, 1, 2, 3, 4],
+#            [0, 1, 2, 3, 4]]])
+```
+
+Here's an example
+
+![enter image description here](assets/vceRQ.png)
+
+```python
+# Source: https://stackoverflow.com/questions/36013063/what-is-the-purpose-of-meshgrid-in-python-numpy
+
+import matplotlib.pyplot as plt
+
+def sinus2d(x, y):
+    return np.sin(x) + np.sin(y)
+
+xx, yy = np.meshgrid(np.linspace(0,2*np.pi,100), np.linspace(0,2*np.pi,100))
+z = sinus2d(xx, yy) # Create the image on this grid
+
+plt.imshow(z, origin='lower', interpolation='none')
+plt.show()
+```
+
 
 
 ### Array Attributes
