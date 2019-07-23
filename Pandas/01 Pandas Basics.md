@@ -160,6 +160,10 @@ There are three types of data structures that Pandas deals with:
 >
 > <https://www.tutorialspoint.com/python_pandas/python_pandas_series.htm>
 
+![Image result for pandas series](assets/series-and-dataframe.width-1200.png)
+
+[Image Source](<https://www.learndatasci.com/tutorials/python-pandas-tutorial-complete-introduction-for-beginners/>)
+
 #### **Creating Series Objects**
 
 ```python
@@ -712,6 +716,16 @@ pd.to_timedelta(s)
 
 
 Even though this section is supposed to be focused on DataFrames, a lot of these operations can be applied to Series and Panel objects as well! It's just that a large part of using Pandas is working with DataFrames
+
+To get at least some brief understanding of your data you can
+
+```python
+# Look at the first few rows of data
+df.head()
+
+# Look at essential details (like dimensions, data types, etc.)
+df.info()
+```
 
 
 
