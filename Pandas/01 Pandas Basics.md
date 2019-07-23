@@ -22,7 +22,45 @@ It's a collection of code snippets and tutorials from everywhere all mashed toge
 
 
 
-## 1. Introduction
+## Table Of Contents <a name="top"></a>
+
+1. [Introduction](#1)    
+2. [Pandas Basics](#2)    
+   2.1 [Data Types](#2.1)    
+   2.2 [Series Basics](#2.2)    
+   2.3 [DataFrame Basics](#2.3)    
+   2.4 [Panel Basics](#2.4)    
+   2.5 [Catagorical Data](#2.5)    
+   2.6 [Basic Binary Operations](#2.6)    
+   2.7 [Casting and Conversion](#2.7)    
+   2.8 [Conditional Indexing](#2.8)    
+   2.9 [IO](#2.9)    
+   2.10 [Plotting](#2.10)    
+   2.11 [Sparse Data](#2.11)    
+3. [Series Operations](#3)    
+   3.1 [Manipulating Series Text](#3.1)    
+   3.2 [Time Series](#3.2)    
+   3.3 [Time Deltas](#3.3)    
+4. [DataFrame Operations](#4)    
+   4.1 [Preface](#4.1)    
+   4.2 [Iterating Through DataFrames](#4.2)    
+   4.3 [Sorting, Reindexing, and Renaming DataFrame Values](#4.3)    
+   4.4 [Replacing DataFrame Values](#4.4)    
+   4.5 [Function Application on DataFrames](#4.5)    
+   4.6 [Descriptive Statistics](#4.6)    
+   4.7 [Statistical Methods](#4.7)    
+   4.8 [Window Functions](#4.8)    
+   4.9 [Data Aggregation](#4.9)    
+   4.10 [Dealing with Missing Data](#4.10)    
+   4.11 [GroupBy Operations](#4.11)    
+   4.12 [Merging and Joining](#4.12)    
+   4.13 [Concatenation](#4.13)    
+5. [EXTRA: Helpful Notes](#5)    
+
+
+
+
+## 1. Introduction <a name="1"></a>
 
 > *pandas* is an open source, BSD-licensed library providing high-performance, easy-to-use data structures and data analysis tools for the [Python](https://www.python.org/) programming language.
 >
@@ -89,9 +127,11 @@ A lot of these notes I'm adapting from
 
 
 
-## 2. Pandas Basics
+## 2. Pandas Basics <a name="2"></a>
 
-### Data Types
+### 2.1 Data Types <a name="2.1"></a>
+[go to top](#top)
+
 
 Note that Pandas is built on top of Numpy.
 
@@ -112,7 +152,9 @@ There are three types of data structures that Pandas deals with:
 
 
 
-### Series Basics
+### 2.2 Series Basics <a name="2.2"></a>
+[go to top](#top)
+
 
 > A Series is a one-dimensional labeled array capable of holding data of any type (integer, string, float, python objects, etc.). The axis labels are collectively called index.
 >
@@ -172,7 +214,9 @@ s.values 	# Returns the Series as an ndarray
 
 
 
-### DataFrame Basics
+### 2.3 DataFrame Basics <a name="2.3"></a>
+[go to top](#top)
+
 
 > A Data frame is a two-dimensional data structure, i.e., data is aligned in a tabular fashion in rows and columns.
 >
@@ -287,7 +331,9 @@ df.values 	# Numpy represendation, NDFrame
 
 
 
-### Panel Basics
+### 2.4 Panel Basics <a name="2.4"></a>
+[go to top](#top)
+
 
 > A **panel** is a 3D container of data. The term **Panel data** is derived from econometrics and is partially responsible for the name pandas − **pan(el)-da(ta)**-s.
 >
@@ -358,7 +404,9 @@ Output of p.minor_xs(1) are the items under the second column (of the original D
 
 
 
-### Catagorical Data
+### 2.5 Catagorical Data <a name="2.5"></a>
+[go to top](#top)
+
 
 So imagine you have data that's made of a limited number of actual values
 
@@ -430,7 +478,9 @@ dtype: bool
 
 
 
-### Basic Binary Operations
+### 2.6 Basic Binary Operations <a name="2.6"></a>
+[go to top](#top)
+
 
 https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.add.html#pandas.DataFrame.add
 
@@ -466,7 +516,9 @@ df.add(other, fill_value=0)
 
 
 
-### Casting and Conversion
+### 2.7 Casting and Conversion <a name="2.7"></a>
+[go to top](#top)
+
 
 ```python
 # Casting object to dtype
@@ -480,7 +532,9 @@ df.convert_objects(convert_numeric=True) # Unconvertibles become NaN
 
 
 
-### Conditional Indexing
+### 2.8 Conditional Indexing <a name="2.8"></a>
+[go to top](#top)
+
 
 So you remember that fancy indexing works?
 
@@ -492,7 +546,9 @@ df.where(df > 0)
 
 
 
-### IO
+### 2.9 IO <a name="2.9"></a>
+[go to top](#top)
+
 
 <https://pandas.pydata.org/pandas-docs/version/0.20/io.html>
 
@@ -528,7 +584,9 @@ pd.read_csv("file", skiprows=2)
 
 
 
-### Plotting
+### 2.10 Plotting <a name="2.10"></a>
+[go to top](#top)
+
 
 Source: <https://www.tutorialspoint.com/python_pandas/python_pandas_visualization.htm>
 
@@ -548,7 +606,9 @@ df.plot.pie(subplots=True)		# Pit plot
 
 
 
-### Sparse Data
+### 2.11 Sparse Data <a name="2.11"></a>
+[go to top](#top)
+
 
 You can sparsify data to save on space on Disk or in the interpretor memory!
 
@@ -566,9 +626,11 @@ sparse_obj.density
 
 
 
-## 3. Series Operations
+## 3. Series Operations <a name="3"></a>
 
-### Manipulating Series Text
+### 3.1 Manipulating Series Text <a name="3.1"></a>
+[go to top](#top)
+
 
 Source: <https://www.tutorialspoint.com/python_pandas/python_pandas_working_with_text_data.htm>
 
@@ -601,7 +663,9 @@ s.str.lower()
 
 
 
-### Time Series
+### 3.2 Time Series <a name="3.2"></a>
+[go to top](#top)
+
 
 ```python
 # Get Current Time
@@ -624,7 +688,9 @@ pd.to_datetime(SOME_DATETIME_SERIES)
 
 
 
-### Time Deltas
+### 3.3 Time Deltas <a name="3.3"></a>
+[go to top](#top)
+
 
 These are almost exactly like the datetime library's timedelta objects.
 
@@ -639,15 +705,19 @@ pd.to_timedelta(s)
 
 
 
-## 4. DataFrame Operations
+## 4. DataFrame Operations <a name="4"></a>
 
-### Preface
+### 4.1 Preface <a name="4.1"></a>
+[go to top](#top)
+
 
 Even though this section is supposed to be focused on DataFrames, a lot of these operations can be applied to Series and Panel objects as well! It's just that a large part of using Pandas is working with DataFrames
 
 
 
-### Iterating Through DataFrames
+### 4.2 Iterating Through DataFrames <a name="4.2"></a>
+[go to top](#top)
+
 
 ```python
 df.iteritems() # (key, value) pairs (Get by columns)
@@ -657,7 +727,9 @@ df.itertuples() # Iterate over rows as named tuples
 
 
 
-### Sorting, Reindexing, and Renaming DataFrame Values
+### 4.3 Sorting, Reindexing, and Renaming DataFrame Values <a name="4.3"></a>
+[go to top](#top)
+
 
 ```python
 # Sort by Values
@@ -690,7 +762,9 @@ df.reindex_like(df2, method="ffill") # Fill missing values
 
 
 
-### Replacing DataFrame Values
+### 4.4 Replacing DataFrame Values <a name="4.4"></a>
+[go to top](#top)
+
 
 ```python
 # Replace strings with numbers
@@ -705,7 +779,9 @@ df['column_name'] = df['column_name'].map(lambda x: x.lstrip('+-').rstrip('aAbBc
 
 
 
-### Function Application on DataFrames
+### 4.5 Function Application on DataFrames <a name="4.5"></a>
+[go to top](#top)
+
 
 ```python
 # Apply function to all values in a scope
@@ -717,7 +793,9 @@ df.applymap(function_name)
 
 
 
-### Descriptive Statistics
+### 4.6 Descriptive Statistics <a name="4.6"></a>
+[go to top](#top)
+
 
 You can do a bunch of basic statistical calculations on the rows of a DataFrame!
 
@@ -749,7 +827,9 @@ df.describe()
 
 
 
-### Statistical Methods
+### 4.7 Statistical Methods <a name="4.7"></a>
+[go to top](#top)
+
 
 ```python
 # Calculate percentage change
@@ -773,7 +853,9 @@ s.rank()
 
 
 
-### Window Functions
+### 4.8 Window Functions <a name="4.8"></a>
+[go to top](#top)
+
 
 ```python
 # Rolling Window
@@ -799,7 +881,9 @@ df.ewm()
 
 
 
-### Data Aggregation
+### 4.9 Data Aggregation <a name="4.9"></a>
+[go to top](#top)
+
 
 ```python
 # Basically custom operations on windows!
@@ -819,7 +903,9 @@ df.aggregate(np.sum) # Sums the entire column
 
 
 
-### Dealing with Missing Data
+### 4.10 Dealing with Missing Data <a name="4.10"></a>
+[go to top](#top)
+
 
 Null values can be NA, NaN, NaT, or None.
 
@@ -848,7 +934,9 @@ df.dropna(axis=0, thresh=2) # Drop rows with 2 or more columns containing None
 
 
 
-### GroupBy Operations
+### 4.11 GroupBy Operations <a name="4.11"></a>
+[go to top](#top)
+
 
 Source: <https://www.tutorialspoint.com/python_pandas/python_pandas_groupby.htm>
 
@@ -894,7 +982,9 @@ df_grouped.filter(lambda x: len(x) > = 3)
 
 
 
-### Merging and Joining
+### 4.12 Merging and Joining <a name="4.12"></a>
+[go to top](#top)
+
 
 > Pandas provides a single function, **merge**, as the entry point for all standard database join operations between DataFrame objects −
 >
@@ -962,7 +1052,9 @@ Image source: <https://stackoverflow.com/questions/38549/what-is-the-difference-
 
 
 
-### Concatenation
+### 4.13 Concatenation <a name="4.13"></a>
+[go to top](#top)
+
 
 > Pandas provides various facilities for easily combining together **Series, DataFrame**, and **Panel** objects.
 >
@@ -988,7 +1080,7 @@ one.append(two)
 
 
 
-## EXTRA: Helpful Notes
+## 5. EXTRA: Helpful Notes <a name="5"></a>
 
 I couldn't find a suitable place to put this information, so I'll put it here:
 

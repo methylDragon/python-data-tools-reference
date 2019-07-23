@@ -16,7 +16,43 @@ It's a collection of code snippets and tutorials from everywhere all mashed toge
 
 
 
-## 1. Introduction
+## Table Of Contents <a name="top"></a>
+
+1. [Introduction](#1)    
+2. [Array Basics](#2)    
+   2.1 [Configuring Numpy](#2.1)    
+   2.2 [Numpy Data Types](#2.2)    
+   2.3 [Creating Arrays](#2.3)    
+   2.4 [Array Attributes](#2.4)    
+   2.5 [Casting](#2.5)    
+   2.6 [Some Array Methods](#2.6)    
+   2.7 [Array Indexing](#2.7)    
+   2.8 [Array Slicing](#2.8)    
+   2.9 [Reshaping Arrays](#2.9)    
+   2.10 [Array Concatenation and Splitting](#2.10)    
+   2.11 [Array Arithmetic](#2.11)    
+   2.12 [More Array Math](#2.12)    
+3. [Going Deeper With Arrays](#3)    
+   3.1 [Broadcasting](#3.1)    
+   3.2 [Vectorize](#3.2)    
+   3.3 [Iterating Through Axes](#3.3)    
+   3.4 [Modifying Output Directly](#3.4)    
+   3.5 [Locating Elements](#3.5)    
+   3.6 [Aggregations](#3.6)    
+   3.7 [Comparisons](#3.7)    
+   3.8 [Sorting Arrays](#3.8)    
+   3.9 [Fancy Indexing](#3.9)    
+   3.10 [Structured Arrays](#3.10)    
+4. [Matrices](#4)    
+   4.1 [Linear Algebra Functions](#4.1)    
+5. [Numpy I/O](#5)    
+   5.1 [Import from CSV](#5.1)    
+   5.2 [Saving and Loading](#5.2)    
+
+
+
+
+## 1. Introduction <a name="1"></a>
 
 > NumPy is the fundamental package for scientific computing with Python. It contains among other things:
 >
@@ -73,7 +109,7 @@ https://docs.scipy.org/doc/numpy-1.15.1/reference/
 
 
 
-## 2. Array Basics
+## 2. Array Basics <a name="2"></a>
 
 The core, most important object in Numpy is the **ndarray**, which stands for n-dimensional array.
 
@@ -87,7 +123,9 @@ The core, most important object in Numpy is the **ndarray**, which stands for n-
 
 
 
-### Configuring Numpy
+### 2.1 Configuring Numpy <a name="2.1"></a>
+[go to top](#top)
+
 
 ```python
 # Set printing precision
@@ -96,7 +134,9 @@ np.set_printoptions(precision=2)
 
 
 
-### Numpy Data Types
+### 2.2 Numpy Data Types <a name="2.2"></a>
+[go to top](#top)
+
 
 #### **List**
 
@@ -137,7 +177,9 @@ np.isinf(x)
 
 
 
-### Creating Arrays
+### 2.3 Creating Arrays <a name="2.3"></a>
+[go to top](#top)
+
 
 General note: Basically any of these functions takes a dtype parameter where you can state the data-type of the output.
 
@@ -301,7 +343,9 @@ plt.show()
 
 
 
-### Array Attributes
+### 2.4 Array Attributes <a name="2.4"></a>
+[go to top](#top)
+
 
 ```python
 # Suppose we create a 3 dimensional array
@@ -335,7 +379,9 @@ example_array.nbytes # 192 (which is 2 * 3 * 4 * 8)
 
 
 
-### Casting
+### 2.5 Casting <a name="2.5"></a>
+[go to top](#top)
+
 
 ```python
 # Just use the .astype() method!
@@ -357,7 +403,9 @@ np.asarray([1, 2, 3]) # This can take list of tuples, tuples, etc.!
 
 
 
-### Some Array Methods
+### 2.6 Some Array Methods <a name="2.6"></a>
+[go to top](#top)
+
 
 There are really a lot of them!
 
@@ -474,7 +522,9 @@ np.negative.at(x, [0, 1]) # This will mutate x
 
 
 
-### Array Indexing
+### 2.7 Array Indexing <a name="2.7"></a>
+[go to top](#top)
+
 
 Of course, you can modify once you index as per normal as well!
 
@@ -528,7 +578,9 @@ a[np.iscomplex(a)] # array([], dtype=int64)
 
 
 
-### Array Slicing
+### 2.8 Array Slicing <a name="2.8"></a>
+[go to top](#top)
+
 
 **Note:** Unlike in native Python, slicing an array gives you an **array view**, not a copy! So if you alter the array view, it'll alter the original array!
 
@@ -684,7 +736,9 @@ a # a is unchanged
 
 
 
-### Reshaping Arrays
+### 2.9 Reshaping Arrays <a name="2.9"></a>
+[go to top](#top)
+
 
 #### **Reshape**
 
@@ -788,7 +842,9 @@ np.swapaxes(array, 0, 1)
 
 
 
-### Array Concatenation and Splitting
+### 2.10 Array Concatenation and Splitting <a name="2.10"></a>
+[go to top](#top)
+
 
 #### **Concatenating**
 
@@ -928,7 +984,9 @@ right
 
 
 
-### Array Arithmetic
+### 2.11 Array Arithmetic <a name="2.11"></a>
+[go to top](#top)
+
 
 ```python
 array = np.arange(4) # array([0, 1, 2, 3])
@@ -957,7 +1015,9 @@ np.mod(array, 2) # %
 
 
 
-### More Array Math
+### 2.12 More Array Math <a name="2.12"></a>
+[go to top](#top)
+
 
 ```python
 array = np.array([0, -1, 2, -3, 4])
@@ -1043,9 +1103,11 @@ There's a lot more! Go look at the `scipy.special` package for a list of all of 
 
 
 
-## 3. Going Deeper With Arrays
+## 3. Going Deeper With Arrays <a name="3"></a>
 
-### Broadcasting
+### 3.1 Broadcasting <a name="3.1"></a>
+[go to top](#top)
+
 
 ![array](../../python-data-tools-reference/Numpy/assets/array.jpg)
 
@@ -1119,7 +1181,9 @@ z = np.sin(x) ** 10 + np.cos(10 + y * x) * np.cos(x)
 
 
 
-### Vectorize
+### 3.2 Vectorize <a name="3.2"></a>
+[go to top](#top)
+
 
 You'd have noticed that all of the functions above seem to be able to act on every element in the array without needing the use of for-loops!
 
@@ -1163,7 +1227,9 @@ vpolyval([1, 2, 3], x=[0, 1]) # array([3, 6])
 
 
 
-### Iterating Through Axes
+### 3.3 Iterating Through Axes <a name="3.3"></a>
+[go to top](#top)
+
 
 You could use a for loop, or you could use this
 
@@ -1176,7 +1242,9 @@ np.apply_along_axis(state_max, axis=0, arr=array_to_parse)
 
 
 
-### Modifying Output Directly
+### 3.4 Modifying Output Directly <a name="3.4"></a>
+[go to top](#top)
+
 
 Ok. So now you've noticed that all the functions above are more or less vectorized functions. They're also called UFuncs, universal functions.
 
@@ -1197,7 +1265,9 @@ np.multiply(a, 10, out=b) # This modifies y directly! This also works for array 
 
 
 
-### Locating Elements
+### 3.5 Locating Elements <a name="3.5"></a>
+[go to top](#top)
+
 
 #### **Where**
 
@@ -1237,7 +1307,9 @@ np.argmin(a) # 0
 
 
 
-### Aggregations
+### 3.6 Aggregations <a name="3.6"></a>
+[go to top](#top)
+
 
 #### **Reduce**
 
@@ -1364,7 +1436,9 @@ high_dim_array.sum(axis = 2) # And so on!
 
 
 
-### Comparisons
+### 3.7 Comparisons <a name="3.7"></a>
+[go to top](#top)
+
 
 #### **Boolean Comparisons**
 
@@ -1404,7 +1478,9 @@ np.all(x < 0)
 
 
 
-### Sorting Arrays
+### 3.8 Sorting Arrays <a name="3.8"></a>
+[go to top](#top)
+
 
 The np sort is default quicksort, though mergesort and heapsort are also options.
 
@@ -1460,7 +1536,9 @@ np.partition(x, 3, axis = 0) # array([2, 1, 3, 4, 6, 5, 7])
 
 
 
-### Fancy Indexing
+### 3.9 Fancy Indexing <a name="3.9"></a>
+[go to top](#top)
+
 
 We know how to index, and slice, and apply Boolean masks (conditional indexing). but we can pass arrays of indices too!
 
@@ -1511,7 +1589,9 @@ x[1:, [2, 0, 1]]
 
 
 
-### Structured Arrays
+### 3.10 Structured Arrays <a name="3.10"></a>
+[go to top](#top)
+
 
 Arrays of mixed type!
 
@@ -1545,7 +1625,7 @@ data[data['age'] < 30]['name'] # array(['Alice', 'Doug'], dtype='<U10')
 
 
 
-## 4. Matrices
+## 4. Matrices <a name="4"></a>
 
 Matrices are strictly 2 dimensional ndarrays!
 
@@ -1570,7 +1650,9 @@ np.asmatrix(some_numpy_array)
 # You can sort them, and do general ndarray stuff with them as well!
 ```
 
-### Linear Algebra Functions
+### 4.1 Linear Algebra Functions <a name="4.1"></a>
+[go to top](#top)
+
 
 ```python
 np.dot() # Get dot product of two arrays
@@ -1601,9 +1683,11 @@ A @ B # Matrix multiplication
 
 
 
-## 5. Numpy I/O
+## 5. Numpy I/O <a name="5"></a>
 
-### Import from CSV
+### 5.1 Import from CSV <a name="5.1"></a>
+[go to top](#top)
+
 
 https://docs.scipy.org/doc/numpy-1.15.0/reference/generated/numpy.genfromtxt.html
 
@@ -1621,7 +1705,9 @@ data = np.genfromtxt(path,
 
 
 
-### Saving and Loading
+### 5.2 Saving and Loading <a name="5.2"></a>
+[go to top](#top)
+
 
 ```python
 # Save One Array
