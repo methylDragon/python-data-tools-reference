@@ -358,6 +358,7 @@ The corresponding arrays will look like:
 
 ```python
 # 1D
+# Every 1D array can be treated as a column vector!
 [7, 2, 9, 10]
 
 # 2D
@@ -799,6 +800,11 @@ array.reshape(1, 1, 5, 2)
 #               [4, 5],
 #               [6, 7],
 #               [8, 9]]]])
+
+# You can also use reshape(-1, <dimension>) to have numpy figure out the other size for you!
+array.reshape(-1, 5)
+# Out: array([[0, 1, 2, 3, 4],
+#             [5, 6, 7, 8, 9]])
 ```
 
 #### **Reshaping with np.newaxis**
