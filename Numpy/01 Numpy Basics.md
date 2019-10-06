@@ -23,7 +23,7 @@ It's a collection of code snippets and tutorials from everywhere all mashed toge
    2.1 [Configuring Numpy](#2.1)    
    2.2 [Numpy Data Types](#2.2)    
    2.3 [Creating Arrays](#2.3)    
-   2.4 [Array Attributes](#2.4)    
+   2.4 [Array Basics and Attributes](#2.4)    
    2.5 [Casting](#2.5)    
    2.6 [Some Array Methods](#2.6)    
    2.7 [Array Indexing](#2.7)    
@@ -343,8 +343,43 @@ plt.show()
 
 
 
-### 2.4 Array Attributes <a name="2.4"></a>
+### 2.4 Array Basics and Attributes <a name="2.4"></a>
 [go to top](#top)
+
+#### **Shape and Index**
+
+It is important to get a proper understanding of the shape of numpy arrays!
+
+![Image result for numpy shape](assets/elsp_0105.png)
+
+[Image Source](https://www.oreilly.com/library/view/elegant-scipy/9781491922927/ch01.html)
+
+The corresponding arrays will look like:
+
+```python
+# 1D
+[7, 2, 9, 10]
+
+# 2D
+[[5.2, 3.0, 4.5],
+ [9.1, 0.1, 0.3]]
+
+# And so on
+```
+
+Another way of looking at it is, **matrix indexing**! Numpy goes by **i, j**, from **2D arrays onwards only**.
+
+If you want to think of it as x, and y, then axis 0 is y, and axis 1 is x. So the indexing is `(y, x)`, and `(i, j)`.
+
+> If you want to do matrix or vector operations, it is best to do it from at least a 2D array.
+>
+> 
+
+![Image result for matrix i j](assets/Matrix.svg.png)
+
+[Image Source](https://simple.wikipedia.org/wiki/Matrix_(mathematics))
+
+#### **Attributes**
 
 
 ```python
