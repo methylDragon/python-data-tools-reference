@@ -1150,7 +1150,7 @@ There's a lot more! Go look at the `scipy.special` package for a list of all of 
 [go to top](#top)
 
 
-![array](../../python-data-tools-reference/Numpy/assets/array.jpg)
+![array](assets/array.jpg)
 
 Image source: https://www.tutorialspoint.com/numpy/numpy_broadcasting.htm
 
@@ -1175,7 +1175,7 @@ Broadcasting causes Numpy to pad or 'stretch' smaller arrays to allow them to op
 
 This is the example in the picture above!
 
-![array](../../python-data-tools-reference/Numpy/assets/array.jpg)
+![array](assets/array.jpg)
 
 ```python
 a = np.array([[0.0,0.0,0.0],[10.0,10.0,10.0],[20.0,20.0,20.0],[30.0,30.0,30.0]]) 
