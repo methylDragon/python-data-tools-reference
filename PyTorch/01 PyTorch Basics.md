@@ -63,6 +63,12 @@ Lots of tutorials run stuff on Google Colab or Jupyter notebooks. Here's just a 
 
 
 
+### Enable GPU/TPU Acceleration
+
+`Edit > Notebook settings`
+
+
+
 ### Load Files
 
 ```python
