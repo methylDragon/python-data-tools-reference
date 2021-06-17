@@ -69,7 +69,9 @@ Lots of tutorials run stuff on Google Colab or Jupyter notebooks. Here's just a 
 
 
 
-### Load Files
+### Load Files into Colab
+
+To see how to load files into PyTorch tensors, check the Tensor section!
 
 ```python
 # From raw link (< 25mb) (Including Github!)
@@ -167,6 +169,20 @@ x_rand = torch.rand_like(x_data, dtype=torch.float) # Overrides the datatype of 
 
 
 
+### Loading Files
+
+```python
+import torch
+import pandas as pd
+
+train = pd.read_csv('train.csv')
+train_tensor = torch.tensor(train.to_numpy())
+```
+
+> **Note**: This is **not** `Tensor`, it's `tensor`, a different constructor.
+
+
+
 ### Getting Tensor Info
 
 Note that the `Size` class is actually just a tuple
@@ -186,6 +202,9 @@ rand_float.size()[0] # Equivalent, both return 4
 rand_float.type() # torch.FloatTensor
 rand_float.dtype() # torch.float32
 rand_float.device # cpu
+
+# Get Memory Location (If equal, memory is shared)
+rand_float.data_ptr()
 ```
 
 
@@ -382,10 +401,10 @@ tri.sum() # tensor(3.)
 torch.sum(tri)
 ```
 
-**Matrix Operations**
+**Vector and Matrix Operations**
 
 ```python
-# Matrix Dot Product (Between tensors a and b. Ensure proper dimensions)
+# Vector Dot Product (Between tensors a and b. Ensure proper dimensions)
 # You can equivalently use .inner() for higher dimensional inner products
 torch.dot(a, b)
 a.dot(b)
