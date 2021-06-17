@@ -57,6 +57,32 @@ Also, this is probably not the best place to get explanations of the deep learni
 
 
 
+## Bonus: Google Colab
+
+Lots of tutorials run stuff on Google Colab or Jupyter notebooks. Here's just a bunch of handy code snippets to do basic stuff with it.
+
+
+
+### Load Files
+
+```python
+# From raw link (< 25mb) (Including Github!)
+url = 'some_raw_direct_link'
+df_1 = pd.read_csv(url)
+
+# From local drive
+from google.colab import files
+uploaded = files.upload() # It'll open a file dialog
+
+# From Google Drive
+from google.colab import drive
+drive.mount('/content/drive') # Use this to auth
+url = 'google_drive_path' # Get this from copying the path of your Google Drive data
+df_1 = pd.read_csv(url)
+```
+
+
+
 ## Tensors
 
 [Tutorial](https://pytorch.org/tutorials/beginner/blitz/tensor_tutorial.html#sphx-glr-beginner-blitz-tensor-tutorial-py) | [API Docs](https://pytorch.org/docs/master/tensors.html)
@@ -293,6 +319,22 @@ tri.unsqueeze(1) # Add a dimension in axis 1
 
 tri.squeeze() # Remove all extra dimensions
 tri.squeeze(1) # Remove all extra dimensions along axis 1
+```
+
+
+
+#### **Transposing**
+
+```python
+# Transpose (All the following are equivalent)
+torch.transpose(some_tensor, 0, 1) # Swaps dimensions 0 and 1 of some_tensor
+some_tensor.transpose(0, 1)
+torch.t(some_tensor) # Equivalent to transpose(input, 0, 1) only
+
+# Permute (Tranpose is actually a special case of permute) (All the following are equivalent)
+# Suppose some_tensor was (2, 3, 4)
+torch.permute(some_tensor, 1, 0, 2) # Makes some_tensor (3, 2, 4)
+some_tensor.permute(1, 0, 2)
 ```
 
 
