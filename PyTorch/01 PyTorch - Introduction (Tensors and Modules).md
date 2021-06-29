@@ -55,7 +55,7 @@ This reference is not intended to be comprehensive, but should give you enough o
 
 Also, this is probably not the best place to get explanations of the deep learning math, you'd probably want to refer to a course for that...
 
-> If you already know what's going on, you can just look at the example code directory instead!
+> If you already know what's going on, you can just look at the resources directory instead (there are some examples!)
 
 
 
@@ -836,6 +836,18 @@ Epoch: 2000, Loss: 0.6999746561050415,
 
 ## Utilities
 
+### Saving and Loading Models
+
+```python
+# Save
+torch.save(model.state_dict(), "model_name.pt")
+
+# Load
+model.load_state_dict(torch.load("model_name.pt"))
+```
+
+
+
 ### Plotting Loss Evolution
 
 This function handily keeps track of entered epochs and losses internally!
@@ -844,13 +856,16 @@ This function handily keeps track of entered epochs and losses internally!
 import matplotlib.pyplot as plt
 
 def record_losses(epoch, loss,
-                  vis=True, clear=False,
+                  vis=True, clear=False, clear_only=False,
                   _memory={'epochs': [], 'losses': []}):
     epochs, losses = _memory['epochs'], _memory['losses']
 
-    if clear:
+    if clear or clear_only:
         epochs.clear()
         losses.clear()
+
+        if clear_only:
+            return _memory
 
     epochs.append(epoch)
     losses.append(loss)
