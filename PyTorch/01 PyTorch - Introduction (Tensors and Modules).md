@@ -855,8 +855,9 @@ This function handily keeps track of entered epochs and losses internally!
 ```python
 import matplotlib.pyplot as plt
 
-def record_losses(epoch, loss,
-                  vis=True, clear=False, clear_only=False,
+def record_losses(epoch=None, loss=None,
+                  vis=True, vis_only=False,
+                  clear=False, clear_only=False,
                   _memory={'epochs': [], 'losses': []}):
     epochs, losses = _memory['epochs'], _memory['losses']
 
@@ -867,8 +868,9 @@ def record_losses(epoch, loss,
         if clear_only:
             return _memory
 
-    epochs.append(epoch)
-    losses.append(loss)
+    if not vis_only:
+        epochs.append(epoch)
+        losses.append(loss)
 
     if vis:
         plt.plot(epochs, losses, label="Loss")
@@ -891,5 +893,23 @@ record_losses(<epoch>, <loss>) # Visualise loss evolution
 record_losses(<epoch>, <loss>, clear=True) # To reset the internal memory
 
 # DO NOT TOUCH THE _memory variable!!
+```
+
+
+
+### Detect Loss Convergence
+
+Good for detecting convergence!
+
+```python
+def converged(losses, window=10, threshold=0.0001):
+    try:
+        if len(losses) < window:
+            return False
+        
+        losses = losses[-window:]
+        return max(losses) - min(losses) < threshold
+    except:
+        return False
 ```
 
