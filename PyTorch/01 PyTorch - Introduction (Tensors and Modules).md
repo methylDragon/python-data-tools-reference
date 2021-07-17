@@ -707,6 +707,22 @@ torch.utils.data.random_split(dataset, lengths)
 train_set, val_set = torch.utils.data.random_split(dataset, [50000, 10000])
 ```
 
+> **Alternatively**, if you have a PyTorch `Dataset`, you can use `Subset`
+>
+> ```python
+> # Source: https://discuss.pytorch.org/t/how-to-split-dataset-into-test-and-validation-sets/33987/5
+> 
+> from torch.utils.data import Subset
+> from sklearn.model_selection import train_test_split
+> 
+> def train_val_dataset(dataset, val_split=0.25):
+>     train_idx, val_idx = train_test_split(list(range(len(dataset))), test_size=val_split)
+>     datasets = {}
+>     datasets['train'] = Subset(dataset, train_idx)
+>     datasets['val'] = Subset(dataset, val_idx)
+>     return datasets
+> ```
+
 
 
 #### **Training: Gradient Descent**
@@ -840,11 +856,167 @@ Epoch: 2000, Loss: 0.6999746561050415,
 
 ```python
 # Save
-torch.save(model.state_dict(), "model_name.pt")
+torch.save(model.state_dict(), "model_name.pth")
 
 # Load
-model.load_state_dict(torch.load("model_name.pt"))
+model.load_state_dict(torch.load("model_name.pth"))
 ```
+
+
+
+### Datasets
+
+[Official Dataset and Dataloader Tutorial](https://pytorch.org/tutorials/beginner/basics/data_tutorial.html)
+
+You can download or create your own **datasets** to iterate through! Then you can use those datasets in a **dataloader** that helps you manage batching, and even helps you manage distributed training across multiple processes!
+
+
+
+#### **Download a Pre-Existing Dataset**
+
+[See all PyTorch datasets here](https://pytorch.org/vision/stable/datasets.html)
+
+> In this case, a single **transform** `ToTensor` is used, which causes all dataset elements taken from the dataset to be subjected to that transform in a pre-processing step as each element is iterated through.
+>
+> You can very easily specify a chain of transforms to be used instead, using `transforms.Compose`.
+
+```python
+from torchvision import datasets
+from torchvision.transforms import ToTensor
+
+# Load training data
+training_data = datasets.FashionMNIST(
+    root="data", # Specify download folder
+    train=True,
+    download=True,
+    transform=ToTensor()
+)
+
+# Load without training data
+test_data = datasets.FashionMNIST(
+    root="data", # Specify download folder
+    train=False,
+    download=True,
+    transform=ToTensor()
+)
+```
+
+
+
+#### **Load a Pre-Existing Dataset**
+
+Alternatively, if you have a folder of images somewhere, you can load the data using an `ImageFolder` instance!
+
+```python
+train_dataset = datasets.ImageFolder("train-uva", train_transform)
+val_dataset = datasets.ImageFolder("val-uva", test_transform)
+```
+
+
+
+#### **Iterate Through Dataset**
+
+You can just index through a dataset manually like a list! You'll get the data **and** the label for each index!
+
+```python
+img, label = training_data[index]
+
+# You can also do random sampling
+sample_idx = torch.randint(len(training_data), size=(1,)).item()
+img, label = training_data[sample_idx]
+```
+
+
+
+#### **Build a Custom Dataset**
+
+Finally, if you have very specific needs, you can write your own dataset class, just subclass from `torch.utils.data.Dataset`
+
+Here's an example from the [tutorial](https://pytorch.org/tutorials/beginner/basics/data_tutorial.html)
+
+> Note: In this case, we're creating a map-style dataset, suitable for when random accesses are cheap.
+>
+> However, if you need to have an iterable-style dataset because random accesses are expensive, you need to subclass [`IterableDataset`](https://pytorch.org/docs/stable/data.html#torch.utils.data.IterableDataset) instead!
+
+```python
+# Source: https://pytorch.org/tutorials/beginner/basics/data_tutorial.html
+from torch.utils.data import Dataset
+
+import os
+import pandas as pd
+from torchvision.io import read_image
+
+class CustomImageDataset(Dataset):
+    def __init__(self, annotations_file, img_dir, transform=None, target_transform=None):
+        # Run at the start
+        self.img_labels = pd.read_csv(annotations_file)
+        self.img_dir = img_dir
+        self.transform = transform
+        self.target_transform = target_transform
+
+    def __len__(self):  # For handling a len() call
+        return len(self.img_labels)
+
+    def __getitem__(self, idx):  # For handling iteration and indexing
+        img_path = os.path.join(self.img_dir, self.img_labels.iloc[idx, 0])
+        image = read_image(img_path)
+        label = self.img_labels.iloc[idx, 1]  # Index into image labels (since it is a pandas dataframe)
+
+        if self.transform:  # Only transform on load!
+            image = self.transform(image)
+        if self.target_transform:
+            label = self.target_transform(label)
+        return image, label
+```
+
+
+
+### DataLoaders
+
+[Docs](https://pytorch.org/docs/stable/data.html#torch.utils.data.DataLoader) | [Official Dataset and DataLoader Tutorial](https://pytorch.org/tutorials/beginner/basics/data_tutorial.html)
+
+Once you have a dataset, you can load it in a **dataloader** that helps you manage batching, and even helps you manage distributed training across multiple processes!
+
+
+
+#### **Initialise and Use DataLoader**
+
+You can even specify whether you need your examples shuffled, and the batch size!
+
+Then, for each iteration of the DataLoader, it'll load as many elements as specified in batch_size!
+
+```python
+from torch.utils.data import DataLoader
+
+train_dataloader = DataLoader(training_data, batch_size=64, shuffle=True)
+test_dataloader = DataLoader(test_data, batch_size=64, shuffle=True)
+```
+
+Then, you can just iterate through the dataloader!
+
+```python
+train_features, train_labels = next(iter(train_dataloader))
+
+# Or using a for loop
+for train_features, train_labels in train_dataloader:
+    # Do something
+```
+
+You can change how you get your train elements by changing the sampler or collate function (which combines data into batches)! [See a tutorial](https://www.scottcondron.com/jupyter/visualisation/audio/2020/12/02/dataloaders-samplers-collate.html)
+
+
+
+#### **Distributed Training**
+
+[See blog post](https://towardsdatascience.com/this-is-hogwild-7cc80cd9b944)
+
+But in short, you set your model to `.share_memory()`, and use a `DistributedSampler` in your `DataLoader `.
+
+> **Note**: Using `IterableDataset` throws a wrench into multiprocessing. Special care has to be taken to split the dataset across each worker instance. See the [docs](https://pytorch.org/docs/stable/data.html#torch.utils.data.IterableDataset) for more information. Unfortunately, you can't use a sampler with iterable datasets!
+
+> **Note**: It is generally not recommended to return CUDA tensors in multi-process loading because of many subtleties in using CUDA and sharing CUDA tensors in multiprocessing (see [CUDA in multiprocessing](https://pytorch.org/docs/stable/notes/multiprocessing.html#multiprocessing-cuda-note)). Instead, we recommend using [automatic memory pinning](https://pytorch.org/docs/stable/data.html#memory-pinning) (i.e., setting `pin_memory=True`), which enables fast data transfer to CUDA-enabled GPUs.
+>
+> [Docs](https://pytorch.org/docs/stable/data.html#map-style-datasets)
 
 
 
