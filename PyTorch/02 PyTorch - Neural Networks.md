@@ -10,7 +10,7 @@ From various sources, including course notes from SUTD
 
 ## Credits
 
-A lot of conceptual information was obtained from the [Artificial Intelligence course taught by Prof. Dorien Herremans](https://dorienherremans.com/content/ai-course-2021).
+A lot of conceptual information and some of the template sources was obtained from the [Artificial Intelligence course taught by Prof. Dorien Herremans](https://dorienherremans.com/content/ai-course-2021).
 
 I've added a lot of personal notes and other relevant information from different tutorials and the PyTorch documentation where appropriate. I've also added links and sources to the best of my ability. Hope this reference helps (:
 
@@ -140,9 +140,9 @@ print(sigmoid(data))
 You can also call the activations functionally instead of building a class instance like so
 
 ```python
-torch.relu(data)
-torch.tanh(data)
-torch.sigmoid(data)
+torch.nn.functional.relu(data)
+torch.nn.functional.tanh(data)
+torch.nn.functional.sigmoid(data)
 ```
 
 
@@ -321,18 +321,18 @@ You can pass in a list of modules, or an `OrderedDict`.
 # When model is run, inputs will be cascaded through the modules
 # in order: Conv -> ReLU -> Conv -> ReLU
 model = nn.Sequential(
-          nn.Conv2d(1,20,5),
+          nn.Conv2d(1, 20, 5),
           nn.ReLU(),
-          nn.Conv2d(20,64,5),
+          nn.Conv2d(20, 64, 5),
           nn.ReLU()
         )
 
 # Using Sequential with OrderedDict. This is functionally the
 # same as the above code
 model = nn.Sequential(OrderedDict([
-          ('conv1', nn.Conv2d(1,20,5)),
+          ('conv1', nn.Conv2d(1, 20, 5)),
           ('relu1', nn.ReLU()),
-          ('conv2', nn.Conv2d(20,64,5)),
+          ('conv2', nn.Conv2d(20, 64, 5)),
           ('relu2', nn.ReLU())
         ]))
 ```
@@ -414,6 +414,8 @@ model.train()
 #### **Training**
 
 Suppose we have a model that outputs un-normalised scores over 4 classes. We run it with a batch of 3.
+
+> There's a general training function found in `/Resources/Examples/utils/train.py` if you need it!
 
 ```python
 optimizer = torch.optim.SGD(model.parameters(), lr=0.001, ...)
@@ -514,6 +516,9 @@ Your bog standard RNN. Propagates a hidden state in the network from step to ste
 ```python
 # Where hidden_size is the number of features of the hidden state h
 rnn = nn.RNN(input_size, hidden_size, out_size)
+
+# Call on input as normal
+rnn(x)
 ```
 
 
@@ -674,3 +679,142 @@ class BidirectionalLSTM(nn.Module):
 
         return self.fc(hidden)
 ```
+
+
+
+### Convolutional Neural Networks (CNN)
+
+We'll just talk about 2D convolutions here, but [1D convolution](https://stats.stackexchange.com/questions/295397/what-is-the-difference-between-conv1d-and-conv2d) is also possible (e.g. for word embeddings!)
+
+
+
+#### **Conv2D**
+
+Does convolutions! It's good for image related machine learning tasks, but you can also use it for anything you can represent using 2D matrices, like music (via spectrogram images)!
+
+![File:2D Convolution Animation.gif](assets/02%20PyTorch%20-%20Neural%20Networks/2D_Convolution_Animation.gif)
+
+[Image Source](https://commons.wikimedia.org/wiki/File:2D_Convolution_Animation.gif) | [More animations](https://github.com/vdumoulin/conv_arithmetic/blob/master/README.md)
+
+```python
+# Doc: https://pytorch.org/docs/stable/generated/torch.nn.ConvTranspose2d.html
+# Single convolutional layer
+cnn = nn.Conv2d(input_channels, output_channels, kernel_size)
+
+# Call on 2D input as normal
+cnn(x)
+
+# There are more convolution layers, like transposed convolution, which upscales the output!
+# See animations for more information
+trans_cnn = nn.ConvTranspose2d(input_channels, output_channels, kernel_size)
+```
+
+> For examples of the `stride`, `padding`, and `dilation` parameters, see [this link for more animations](https://github.com/vdumoulin/conv_arithmetic/blob/master/README.md#transposed-convolution-animations).
+>
+> But in short:
+>
+> - **Stride** is how much the kernel moves per step
+> - **Padding** pads the input image with 0s on the borders (it'll pad with 0s)
+> - **Dilation** 'spreads' out the convolution kernel 
+>
+> Furthermore:
+>
+> > The parameters `kernel_size`, `stride`, `padding`, `output_padding` can either be:
+> >
+> > > - a single `int` – in which case the same value is used for the height and width dimensions
+> > > - a `tuple` of two ints – in which case, the first int is used for the height dimension, and the second int for the width dimension
+> >
+> > [Docs](https://pytorch.org/docs/stable/generated/torch.nn.ConvTranspose2d.html)
+
+
+
+#### **Dimensions**
+
+If you have more than 1 input channel, your kernel will be multi-dimensional (this is how a 1x1 kernel still makes sense!)
+
+<img src="assets/02%20PyTorch%20-%20Neural%20Networks/image-20210717181347754.png" alt="image-20210717181347754" style="zoom:50%;" />
+
+[Image Source](https://towardsdatascience.com/a-comprehensive-introduction-to-different-types-of-convolutions-in-deep-learning-669281e58215)
+
+Then, you'll have one kernel learnt **per** output channel!
+
+The kernel weights per kernel then will be: `kernel_height * kernel_width * in_channels`, for n kernels!!
+
+
+
+#### **Activations**
+
+Convolutional layers can flow into activation functions as per normal (as if they were linear layers).
+
+So you can use all your [good friends](https://pytorch.org/docs/stable/nn.html#non-linear-activations-weighted-sum-nonlinearity)
+
+
+
+#### **Pooling, and Flattening**
+
+> **Pooling**
+>
+> ![image-20210717182225513](assets/02%20PyTorch%20-%20Neural%20Networks/image-20210717182225513.png)
+>
+> [Image Source](https://ai.plainenglish.io/pooling-layer-beginner-to-intermediate-fa0dbdce80eb)
+
+```python
+# Pooling (there's a lot more)
+nn.MaxPool2d(kernel_size)
+nn.AvgPool2d(kernel_size)
+nn.MaxUnpool2d(kernel_size) # All non-max values are set to 0
+
+# Flattening
+out = out.view(out.size(0), -1) 
+```
+
+
+
+#### **Pre-Processing**
+
+Use `torchvision.transforms` to perform image transformations for pre-processing and `PIL` to open images!
+
+[See all transforms here](https://pytorch.org/vision/stable/transforms.html), or see a [short tutorial with visualisations](https://www.analyticsvidhya.com/blog/2021/04/10-pytorch-transformations-you-need-to-know/)
+
+```python
+import torchvision.transforms as transforms
+from PIL import Image
+import json, io, requests, string
+
+# Create a chain of preprocessing transforms using transforms.Compose
+preprocessFn = transforms.Compose(
+    [transforms.Resize(256),  # 1. Resize smallest side to 256.
+     transforms.CenterCrop(224), # 2. Crop the center 224x224 pixels.
+     transforms.ToTensor(), # 3. Convert to pytorch tensor.
+     transforms.Normalize(mean = [0.485, 0.456, 0.406],  # normalize.
+                          std = [0.229, 0.224, 0.225])])
+
+response = requests.get(img_url)
+img_pil = Image.open(io.BytesIO(response.content))
+
+# Unsqueeze adds a dummy batch dimension needed to pass through the model.
+input_img =  preprocessFn(img_pil).unsqueeze(0)
+predictions = cnn_model(input_img)
+```
+
+
+
+#### **Using Pre-trained Models**
+
+There are many pre-trained computer vision models out there for use already! You can very easily use them to obtain image features to do transfer learning on, saving massive amounts of time and compute!
+
+```python
+import torchvision.models as models
+
+# https://arxiv.org/abs/1512.00567 [Re-thinking the Inception Architecture]
+inception_model = models.inception_v3(pretrained=True)
+
+# https://arxiv.org/abs/1512.03385 [Residual Networks]
+resnet_model = models.resnet50(pretrained=True)
+
+
+# Then you can simply call them as necessary
+resnet_model(image)
+```
+
+You just saw how to use pre-trained models in their entirety, but you can also use the outputs of the hidden layers (so you can do transfer learning!)
