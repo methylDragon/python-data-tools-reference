@@ -905,7 +905,7 @@ test_data = datasets.FashionMNIST(
 
 #### **Load a Pre-Existing Dataset**
 
-Alternatively, if you have a folder of images somewhere, you can load the data using an `ImageFolder` instance!
+Alternatively, if you have a folder of images somewhere, you can load the data using an `ImageFolder` instance, running pre-processing using `torchvision.transforms`!
 
 ```python
 train_dataset = datasets.ImageFolder("train-uva", train_transform)
@@ -1002,7 +1002,11 @@ for train_features, train_labels in train_dataloader:
     # Do something
 ```
 
-You can change how you get your train elements by changing the sampler or collate function (which combines data into batches)! [See a tutorial](https://www.scottcondron.com/jupyter/visualisation/audio/2020/12/02/dataloaders-samplers-collate.html)
+You can change how you get your train elements by changing the sampler, batch sampler, or collate function (which takes batches and processes/reshapes them into a usable form for neural network input)! [See a tutorial](https://www.scottcondron.com/jupyter/visualisation/audio/2020/12/02/dataloaders-samplers-collate.html), or [another one](https://medium.com/geekculture/pytorch-datasets-dataloader-samplers-and-the-collat-fn-bbfc7c527cf1).
+
+- Samplers generate a sequence of indices for the whole dataset
+- Batch samplers wrap samplers or iterables of sequences to yield a mini-batch of indices
+- Collate functions 'collate' a batch (hard to explain, you should read the docs for a more thorough treatment)
 
 
 
